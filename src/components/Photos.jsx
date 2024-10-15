@@ -3,12 +3,18 @@ import { FiX } from 'react-icons/fi'; // Icon for the close button
 import img1 from '../assets/pictures/event1.jpg'; // Add your photos here
 import img2 from '../assets/pictures/event2.jpg';
 import img3 from '../assets/pictures/event3.jpg';
+import img4 from '../assets/pictures/event4.jpg';
+import img5 from '../assets/pictures/event5.jpg';
+import img6 from '../assets/pictures/event6.jpg';
 
 // Photo data (Replace these with your actual images)
 const eventPhotos = [
     { src: img1, alt: "Previous Event 1" },
     { src: img2, alt: "Previous Event 2" },
     { src: img3, alt: "Previous Event 3" },
+    { src: img4, alt: "Previous Event 4" },
+    { src: img5, alt: "Previous Event 5" },
+    { src: img6, alt: "Previous Event 6" },
     // Add more photos as needed
 ];
 
@@ -41,7 +47,7 @@ const Photos = () => {
                             <img
                                 src={photo.src}
                                 alt={photo.alt}
-                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300 ease-in-out"
+                                className="w-full h-52 object-cover transform group-hover:scale-110 transition-transform duration-300 ease-in-out"
                             />
                             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                 <p className="text-white font-semibold text-lg">{photo.alt}</p>

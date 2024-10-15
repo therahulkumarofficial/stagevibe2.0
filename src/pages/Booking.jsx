@@ -56,7 +56,7 @@ const Booking = () => {
     const seatBooked = isSeatBooked(seat);
     const seatSelected = selectedSeats.has(seat);
 
-    let seatClass = 'rounded-md w-8 h-8 flex items-center justify-center cursor-pointer text-xs mx-0.5 ';
+    let seatClass = 'rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-xs mx-0.5 ';
     if (seatBooked) {
       seatClass += 'bg-gray-400';
     } else if (seatSelected) {
@@ -97,7 +97,7 @@ const Booking = () => {
               {seats % 2 === 0 && <div className="w-14" />}
 
               {/* Left seats */}
-              {Array.from({ length: Math.floor(seats / 2) }, (_, index) => `${row}${seats - Math.floor(seats / 2) - index - 1}`).map(renderSeat)}
+              {Array.from({ length: Math.floor(seats / 2) }, (_, index) => `${row}${seats - Math.floor(seats / 2) - index}`).map(renderSeat)}
             </div>
           </div>
         ))}
