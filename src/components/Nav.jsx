@@ -37,7 +37,7 @@ const Nav = () => {
         {/* Navigation Links */}
         <nav className="md:flex hidden md:flex-row md:items-center md:gap-4">
           <ul className="md:text-lg flex flex-col md:flex-row md:gap-4">
-            {["About", "Agenda", "Photos", "Book Seat", "Team", "Login"].map((item, index) => (
+            {["About", "Agenda", "Photos", "Team"].map((item, index) => (
               <motion.li
                 key={index}
                 whileHover={{ scale: 1.1 }} // Hover animation to scale the link
@@ -51,9 +51,21 @@ const Nav = () => {
                 </a>
               </motion.li>
             ))}
+            {/* Book Seat Link - use Link for routing */}
+            <motion.li
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link
+                to="/booking" // Link to the /booking route
+                className="nav-link bg-transparent hover:bg-white hover:text-black font-semibold transition-all duration-300 rounded-md py-2 px-4 tracking-normal block"
+              >
+                Book Seat
+              </Link>
+            </motion.li>
           </ul>
         </nav>
-
+        
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
           <motion.nav
