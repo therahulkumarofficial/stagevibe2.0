@@ -1,0 +1,34 @@
+/* Booking.css */
+.scrollable-container {
+    overflow-x: auto;
+    scrollbar-width: thin; 
+    scrollbar-color: #4caf50 transparent;
+  }
+  
+  .scrollable-container::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .scrollable-container::-webkit-scrollbar-track {
+    background: #e0e0e0; 
+  }
+  
+  .scrollable-container::-webkit-scrollbar-thumb {
+    background: #4caf50; 
+    border-radius: 4px; 
+  }
+  
+  .scrollable-container::-webkit-scrollbar-thumb:hover {
+    background: #388e3c;
+  }
+  
+  @media (min-width: 769px) {
+    .scrollable-container {
+      overflow: hidden;
+    }
+  
+    .scrollable-container:hover {
+      overflow: hidden; 
+    }
+  }
+  

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import './Booking.css';
 
-// Seat rows and their respective seat counts
 const rows = [
   { row: 'A', seats: 10 },
   { row: 'B', seats: 10 },
@@ -18,45 +18,67 @@ const rows = [
 
 const Booking = () => {
   const [selectedSeats, setSelectedSeats] = useState(new Set());
-  const [userDetails, setUserDetails] = useState({ name: '', class: '', rollNo: '', dob: '' });
+  const [userDetails, setUserDetails] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [isBooking, setIsBooking] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const scrollRef = useRef(null);
+  const scrollInterval = useRef(null);
+  const isManualScroll = useRef(false);
+  const autoScrollTimeout = useRef(null); // Ref for debounce timeout
+  const bookedSeats = [
+    'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',
+    'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10'
+  ];
 
   const handleSeatSelection = (seat) => {
     const updatedSelectedSeats = new Set(selectedSeats);
     if (updatedSelectedSeats.has(seat)) {
       updatedSelectedSeats.delete(seat);
+      const newUserDetails = { ...userDetails };
+      delete newUserDetails[seat]; // Remove user details for the unselected seat
+      setUserDetails(newUserDetails);
     } else {
       updatedSelectedSeats.add(seat);
     }
     setSelectedSeats(updatedSelectedSeats);
-    setTotalAmount(updatedSelectedSeats.size * 250); // Update total amount
+    setTotalAmount(updatedSelectedSeats.size * 250);
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (seat, e) => {
     const { name, value } = e.target;
-    setUserDetails({ ...userDetails, [name]: value });
+    setUserDetails((prevDetails) => ({
+      ...prevDetails,
+      [seat]: {
+        ...prevDetails[seat],
+        [name]: value,
+      },
+    }));
   };
 
   const handleBooking = () => {
-    // Implement booking logic (save data to server or state)
-    alert(`Booked ${selectedSeats.size} seats for ${userDetails.name}. Total: ₹${totalAmount}`);
-    setSelectedSeats(new Set()); // Clear selection
-    setUserDetails({ name: '', class: '', rollNo: '', dob: '' }); // Reset user details
-    setTotalAmount(0); // Reset amount
-    setIsBooking(false); // Close booking mode
+    const detailsList = Array.from(selectedSeats).map(seat => ({
+      seat,
+      ...userDetails[seat],
+    }));
+    alert(`Booked ${selectedSeats.size} seats for ${JSON.stringify(detailsList)}. Total: ₹${totalAmount}`);
+    
+    setSelectedSeats(new Set());
+    setUserDetails({});
+    setTotalAmount(0);
+    setIsBooking(false);
   };
+  
 
   const isSeatBooked = (seat) => {
-    // Replace this logic with actual booking data
-    return false; // Example, replace as needed
+    return bookedSeats.includes(seat);
   };
 
   const renderSeat = (seat) => {
     const seatBooked = isSeatBooked(seat);
     const seatSelected = selectedSeats.has(seat);
 
-    let seatClass = 'rounded-md w-7 h-7 flex items-center justify-center cursor-pointer text-xs mx-0.5 ';
+    let seatClass = 'rounded-md w-6 h-6 flex items-center justify-center cursor-pointer text-xs mx-0.5 ';
     if (seatBooked) {
       seatClass += 'bg-gray-400';
     } else if (seatSelected) {
@@ -80,27 +102,97 @@ const Booking = () => {
     setIsBooking(true);
   };
 
+  const startAutoScrolling = () => {
+    if (scrollRef.current && isMobile && !isManualScroll.current) {
+      scrollRef.current.scrollLeft = 0; // Reset scroll position if needed
+      scrollInterval.current = setInterval(() => {
+        scrollRef.current.scrollBy({
+          left: 1,
+          behavior: 'smooth',
+        });
+      }, 30); // Adjust speed by changing the interval time
+    }
+  };
+
+  const stopAutoScrolling = () => {
+    clearInterval(scrollInterval.current);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Check size on initial render
+    handleResize();
+
+    // Add event listener for resize
+    window.addEventListener('resize', handleResize);
+
+    // Start auto-scrolling when mobile
+    if (isMobile) {
+      startAutoScrolling();
+    }
+
+    return () => {
+      stopAutoScrolling();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [isMobile]);
+
+  const handleTouchStart = () => {
+    isManualScroll.current = true;
+    stopAutoScrolling(); // Stop auto-scrolling
+    clearTimeout(autoScrollTimeout.current); // Clear timeout if it exists
+  };
+
+  const handleTouchEnd = () => {
+    isManualScroll.current = false;
+    autoScrollTimeout.current = setTimeout(startAutoScrolling, 5000); // Restart auto-scrolling after 1 second of inactivity
+  };
+
+  const handleWheel = (e) => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += e.deltaY; // Manual scroll on mouse wheel
+      stopAutoScrolling(); // Stop auto-scrolling when user scrolls with the mouse
+    }
+  };
+
   return (
-    <div className="p-5">
+    <div className="p-5 bg-gradient-to-b from-[#0b0b22FD] to-[#0f1a3dFD] min-h-screen flex flex-col items-center justify-center">
       <h1 className="text-center text-3xl font-bold mb-4">
         <i className="fas fa-film"></i> &nbsp; Book Your Seats Now!
       </h1>
+      <div className="rounded-lg w-60 h-16 mb-8 flex text-center font-bold items-center justify-center text-lg text-red-500 mx-0.5 border border-yellow-500">
+        All eyes this way please!
+      </div>
 
-      <div className="grid grid-cols-12 gap-2 mb-4">
-        {rows.map(({ row, seats }) => (
-          <div key={row} className="col-span-12 flex justify-center mb-2">
-            <div className="flex items-center">
-              {/* Right seats (reversed numbering) */}
-              {Array.from({ length: Math.ceil(seats / 2) }, (_, index) => `${row}${seats - index}`).map(renderSeat)}
+      {/* Scrollable seat layout */}
+      <div
+        className="scrollable-container w-full overflow-x-scroll mb-4"
+        ref={scrollRef}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onWheel={handleWheel} // Listen for mouse wheel events
+      >
+        <div className="min-w-[800px]">
+          <div className="grid grid-cols-12 gap-2">
+            {rows.map(({ row, seats }) => (
+              <div key={row} className="col-span-12 flex justify-center mb-2">
+                <div className="flex items-center">
+                  {/* Right seats (reversed numbering) */}
+                  {Array.from({ length: Math.ceil(seats / 2) }, (_, index) => `${row}${seats - index}`).map(renderSeat)}
 
-              {/* Middle space */}
-              {seats % 2 === 0 && <div className="w-14" />}
+                  {/* Middle space */}
+                  {seats % 2 === 0 && <div className="w-14" />}
 
-              {/* Left seats */}
-              {Array.from({ length: Math.floor(seats / 2) }, (_, index) => `${row}${seats - Math.floor(seats / 2) - index}`).map(renderSeat)}
-            </div>
+                  {/* Left seats */}
+                  {Array.from({ length: Math.floor(seats / 2) }, (_, index) => `${row}${seats - Math.floor(seats / 2) - index}`).map(renderSeat)}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
       {/* Instructions */}
@@ -150,6 +242,28 @@ const Booking = () => {
               />
             </div>
             <div className="mb-4">
+              <label>Phone:</label>
+              <input
+                type="number"
+                name="phone"
+                value={userDetails.name}
+                onChange={handleInputChange}
+                className="border border-white-300 rounded w-full p-2"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={userDetails.name}
+                onChange={handleInputChange}
+                className="border border-white-300 rounded w-full p-2"
+                required
+              />
+            </div>
+            <div className="mb-4">
               <label>Class:</label>
               <select
                 name="class"
@@ -169,20 +283,9 @@ const Booking = () => {
             <div className="mb-4">
               <label>Roll No:</label>
               <input
-                type="text"
+                type="number"
                 name="rollNo"
                 value={userDetails.rollNo}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label>Date of Birth:</label>
-              <input
-                type="date"
-                name="dob"
-                value={userDetails.dob}
                 onChange={handleInputChange}
                 className="border border-gray-300 rounded w-full p-2"
                 required
@@ -194,17 +297,7 @@ const Booking = () => {
                 Pay {totalAmount}
               </button>
               <button
-                onClick={() => setIsBooking(false)}
-                className="bg-red-500 text-white px-4 py-2 rounded ml-2"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+                onClick={() => setIsBooking(false)} className="bg-red-500 text-white px-4 py-2 rounded ml-2" > Cancel </button> </div> </div> </div>)} </div>);
 };
 
 export default Booking;
