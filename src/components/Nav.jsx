@@ -24,8 +24,6 @@ const Nav = () => {
         <a href="/" className="text-white text-2xl font-serif font-semibold">
           StageVibe
         </a>
-        <a href="/booking" className="nav-link bg-transparent hover:bg-white hover:text-black font-semibold transition-all duration-300 rounded-md py-2 px-4 ml-40 tracking-normal block">Book Seat</a>
-
         {/* Hamburger Menu Icon for Mobile */}
         <button
           className="md:hidden text-white text-2xl focus:outline-none"

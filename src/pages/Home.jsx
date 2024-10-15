@@ -30,9 +30,9 @@ const Home = () => {
           Join us for an unforgettable day at the{' '}
           <span className="text-yellow-300">College Auditorium</span> filled with laughter, music, and performances.
         </p>
-        <button className="py-3 px-8 bg-yellow-400 text-black font-semibold rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
+        <a href='/booking' className="py-3 px-8 bg-yellow-400 text-black font-semibold rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 ease-in-out transform hover:scale-105">
           Reserve Your Spot
-        </button>
+        </a>
       </div>
 
       {/* Animated Floating Element */}
