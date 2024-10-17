@@ -1,7 +1,8 @@
 import React from 'react';
 import { FaInstagram, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'; // Icons for social media
-import ayush from '..//assets/team/ayush.png';
-import shiva from '..//assets/team/shiva.png';
+import ayush from '../assets/team/ayush.png';
+import shiva from '../assets/team/shiva.png';
+import rahul from '../assets/team/rahul.png';
 
 // Example team data
 const teamMembers = [
@@ -28,13 +29,13 @@ const teamMembers = [
         twitter: 'https://twitter.com/rohitkumar',
     },
     {
-        name: 'Shalini Gupta',
-        role: 'Backend Developer',
-        image: ayush,
-        instagram: 'https://instagram.com/ayushroyl',
-        linkedin: 'https://www.linkedin.com/in/shalinigupta',
-        github: 'https://github.com/shalinigupta',
-        twitter: 'https://twitter.com/shalinigupta',
+        name: 'Rahul Kumar',
+        role: 'Frontend Developer',
+        image: rahul,
+        instagram: 'https://www.instagram.com/therahulkumar9',
+        linkedin: 'https://www.linkedin.com/in/therahulkumar9',
+        github: 'https://github.com/therahulkumar9',
+        twitter: 'https://x.com/therahulkumar9',
     },
     {
         name: 'Shiva',
