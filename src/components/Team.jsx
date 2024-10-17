@@ -20,13 +20,13 @@ const teamMembers = [
         twitter: 'https://twitter.com/ayushroy',
     },
     {
-        name: 'Rohit Kumar',
-        role: 'Frontend Devloper',
-        image: ayush,
-        instagram: 'https://instagram.com/ayushroyl',
-        linkedin: 'https://www.linkedin.com/in/rohitkumar',
-        github: 'https://github.com/rohitkumar',
-        twitter: 'https://twitter.com/rohitkumar',
+        name: 'Shiva',
+        role: 'Backend Developer',
+        image: shiva, 
+        instagram: 'https://instagram.com/shivamsinghamrajput', 
+        linkedin: 'https://www.linkedin.com/in/shivadhruva',
+        github: 'https://github.com/shivaarajput',
+        twitter: 'https://twitter.com/shivamsinghamrajput',
     },
     {
         name: 'Rahul Kumar',
@@ -36,15 +36,6 @@ const teamMembers = [
         linkedin: 'https://www.linkedin.com/in/therahulkumar9',
         github: 'https://github.com/therahulkumar9',
         twitter: 'https://x.com/therahulkumar9',
-    },
-    {
-        name: 'Shiva',
-        role: 'Backend Developer',
-        image: shiva, 
-        instagram: 'https://instagram.com/shivamsinghamrajput', 
-        linkedin: 'https://www.linkedin.com/in/shivadhruva',
-        github: 'https://github.com/shivaarajput',
-        twitter: 'https://twitter.com/shivamsinghamrajput',
     },
 ];
 
