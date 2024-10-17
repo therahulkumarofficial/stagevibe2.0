@@ -73,7 +73,7 @@ const Team = () => {
                             <div className="flex justify-center space-x-4">
                                 {member.instagram && (
                                     <a
-                                        href={member.Instagram}
+                                        href={member.instagram}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-pink-500 hover:text-purple-500"
