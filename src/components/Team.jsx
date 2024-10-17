@@ -13,9 +13,9 @@ const teamMembers = [
           ),
         image: ayush,
         instagram: 'https://instagram.com/ayushroyl', 
-        linkedin: 'https://www.linkedin.com/in/ayushroy',
-        github: 'https://github.com/ayushroy',
-        twitter: 'https://twitter.com/ayushroy',
+        linkedin: 'https://www.linkedin.com/in/ayushroyl',
+        github: 'https://github.com/ayushroyl',
+        twitter: 'https://twitter.com/ayushroyl',
     },
     {
         name: 'Rohit Kumar',
