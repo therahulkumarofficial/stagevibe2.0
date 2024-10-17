@@ -28,7 +28,7 @@ const About = () => {
             📍 <span className="text-yellow-300">Venue:</span> Auditorium, Nalanda College
           </p>
         </div>
-        <a href='/booking' className="mt-10 py-3 px-8 bg-yellow-300 text-black font-semibold rounded-full hover:bg-yellow-400 transition duration-300 ease-in-out shadow-lg">
+        <a href='/booking' className="mt-16 py-3 px-6 bg-yellow-300 text-black font-semibold rounded-full hover:bg-yellow-400 transition duration-300 ease-in-out shadow-lg">
           Book Your Seat Now
         </a>
       </div>

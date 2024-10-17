@@ -1,6 +1,8 @@
 import React from 'react';
 import { FaInstagram, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'; // Icons for social media
-import ayush from '..//assets/team/ayush.png';
+import ayush from '../assets/team/ayush.png';
+import shiva from '../assets/team/shiva.png';
+import rahul from '../assets/team/rahul.png';
 
 // Example team data
 const teamMembers = [
@@ -18,22 +20,22 @@ const teamMembers = [
         twitter: 'https://twitter.com/ayushroyl',
     },
     {
-        name: 'Rohit Kumar',
-        role: 'Frontend Devloper',
-        image: ayush,
-        instagram: 'https://instagram.com/ayushroyl',
-        linkedin: 'https://www.linkedin.com/in/rohitkumar',
-        github: 'https://github.com/rohitkumar',
-        twitter: 'https://twitter.com/rohitkumar',
+        name: 'Shiva',
+        role: 'Backend Developer',
+        image: shiva, 
+        instagram: 'https://instagram.com/shivamsinghamrajput', 
+        linkedin: 'https://www.linkedin.com/in/shivadhruva',
+        github: 'https://github.com/shivaarajput',
+        twitter: 'https://twitter.com/shivamsinghamrajput',
     },
     {
-        name: 'Shalini Gupta',
-        role: 'Backend Developer',
-        image: ayush,
-        instagram: 'https://instagram.com/ayushroyl',
-        linkedin: 'https://www.linkedin.com/in/shalinigupta',
-        github: 'https://github.com/shalinigupta',
-        twitter: 'https://twitter.com/shalinigupta',
+        name: 'Rahul Kumar',
+        role: 'Frontend Developer',
+        image: rahul,
+        instagram: 'https://www.instagram.com/therahulkumar9',
+        linkedin: 'https://www.linkedin.com/in/therahulkumar9',
+        github: 'https://github.com/therahulkumar9',
+        twitter: 'https://x.com/therahulkumar9',
     },
 ];
 
@@ -63,7 +65,7 @@ const Team = () => {
                             <div className="flex justify-center space-x-4">
                                 {member.instagram && (
                                     <a
-                                        href={member.Instagram}
+                                        href={member.instagram}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-pink-500 hover:text-purple-500"
