@@ -1,6 +1,8 @@
 {
-    "routes": [
-      { "src": "/booking", "dest": "/" }
-    ]
-  }
-  
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

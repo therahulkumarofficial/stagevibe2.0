@@ -69,15 +69,14 @@ const AdminDashboard = () => {
               name="class"
               value={userForm.class}
               onChange={handleUserInputChange}
-              placeholder="Class"
               className="p-2 border border-gray-300 rounded-md"
               required
             >
                 <option value="BCA1">BCA1</option>
-                <option value="BCA1">BCA2</option>
-                <option value="BCA1">BCA3</option>
-                <option value="BCA1">MCA1</option>
-                <option value="BCA1">MCA3</option>
+                <option value="BCA2">BCA2</option>
+                <option value="BCA3">BCA3</option>
+                <option value="MCA1">MCA1</option>
+                <option value="MCA3">MCA3</option>
             </select>
             <input
               type="text"
@@ -138,18 +137,6 @@ const AdminDashboard = () => {
                   <p>Mobile: {user.mobile}</p>
                   <p>Seat No: {user.seatNo}</p>
                   <p>Payment Mode: {user.paymentMode}</p>
-                  <button
-                    onClick={() => handleApproveUser(user.id)}
-                    className="bg-green-500 text-white py-1 px-3 rounded-md mr-2"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(user.id)}
-                    className="bg-red-500 text-white py-1 px-3 rounded-md"
-                  >
-                    Delete
-                  </button>
                 </li>
               ))}
           </ul>

@@ -125,10 +125,10 @@ const SuperAdminDashboard = () => {
                             required
                         >
                             <option value="BCA1">BCA1</option>
-                            <option value="BCA1">BCA2</option>
-                            <option value="BCA1">BCA3</option>
-                            <option value="BCA1">MCA1</option>
-                            <option value="BCA1">MCA3</option>
+                            <option value="BCA2">BCA2</option>
+                            <option value="BCA3">BCA3</option>
+                            <option value="MCA1">MCA1</option>
+                            <option value="MCA3">MCA3</option>
                         </select>
                         <input
                             type="text"
