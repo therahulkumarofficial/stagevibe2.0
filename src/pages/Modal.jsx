@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose }) => {
     return regex.test(number);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate mobile number
@@ -31,7 +31,24 @@ const Modal = ({ isOpen, onClose }) => {
       return;
     }
 
-    setSubmitted(true); // Show thank you message
+    try {
+      // Send form data to backend API
+      const response = await fetch('YOUR_API_ENDPOINT_URL', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong while submitting the form');
+      }
+
+      setSubmitted(true); // Show thank you message on successful submission
+    } catch (error) {
+      setError('Failed to submit the form. Please try again later.');
+    }
   };
 
   if (!isOpen) return null;
@@ -42,7 +59,7 @@ const Modal = ({ isOpen, onClose }) => {
         {submitted ? (
           <div className="text-center">
             <h2 className="text-lg font-bold text-yellow-400 mb-4">Thank You!</h2>
-            <p className='text-black font-bold'>Thank you for applying to participate in the Fresher's Party. We will contact you soon in the college</p>
+            <p className="text-black font-bold">Thank you for applying to participate in the Fresher's Party. We will contact you soon in the college.</p>
             <button 
               onClick={onClose} 
               className="mt-4 py-2 px-4 bg-yellow-400 text-black font-semibold rounded-full hover:bg-yellow-500 transition duration-300"
