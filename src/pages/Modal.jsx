@@ -32,20 +32,30 @@ const Modal = ({ isOpen, onClose }) => {
     }
 
     try {
+      // Prepare the data for API request
+      const payload = {
+        name: formData.name,
+        roll_number: formData.rollNo,
+        phone: formData.mobileNo,
+        class: formData.classN,
+        role: formData.act
+      };
       // Send form data to backend API
-      const response = await fetch('YOUR_API_ENDPOINT_URL', {
+      const response = await fetch('https://admin-panel-tan-three.vercel.app/apply', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
+      if (response.status === 201) {
+        setSubmitted(true); // Show thank you message on successful submission
+      } else if (response.status === 409) {
+        setError('This entry already exists.');
+      } else {
         throw new Error('Something went wrong while submitting the form');
       }
-
-      setSubmitted(true); // Show thank you message on successful submission
     } catch (error) {
       setError('Failed to submit the form. Please try again later.');
     }
