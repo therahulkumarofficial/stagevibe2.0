@@ -62,13 +62,13 @@ const Booking = () => {
       ...userDetails[seat],
     }));
     alert(`Booked ${selectedSeats.size} seats for ${JSON.stringify(detailsList)}. Total: ₹${totalAmount}`);
-    
+
     setSelectedSeats(new Set());
     setUserDetails({});
     setTotalAmount(0);
     setIsBooking(false);
   };
-  
+
 
   const isSeatBooked = (seat) => {
     return bookedSeats.includes(seat);
@@ -196,18 +196,22 @@ const Booking = () => {
       </div>
 
       {/* Instructions */}
-      <div className="flex justify-center mb-4">
-        <div className="flex items-center mr-4">
+      <div className="flex flex-wrap justify-center mb-4">
+        <div className="flex items-center mr-4 mb-2">
           <div className="w-4 h-4 border border-green-500 bg-transparent rounded mr-2"></div>
           <span>Available</span>
         </div>
-        <div className="flex items-center mr-4">
+        <div className="flex items-center mr-4 mb-2">
           <div className="w-4 h-4 bg-green-500 rounded mr-2"></div>
           <span>Selected</span>
         </div>
-        <div className="flex items-center">
-          <div className="w-4 h-4 bg-gray-400 rounded mr-2"></div>
+        <div className="flex items-center mr-4 mb-2">
+          <div className="w-4 h-4 bg-gray-500 rounded mr-2"></div>
           <span>Booked</span>
+        </div>
+        <div className="flex items-center mb-2">
+          <div className="w-4 h-4 bg-yellow-400 rounded mr-2"></div>
+          <span>Pending</span>
         </div>
       </div>
 
