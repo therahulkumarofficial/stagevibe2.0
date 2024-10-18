@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 const Modal = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
-    className: '',
+    classN: 'Choose',
     rollNo: '',
     mobileNo: '',
-    act: 'Dance',
+    act: 'Choose',
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -42,7 +42,7 @@ const Modal = ({ isOpen, onClose }) => {
         {submitted ? (
           <div className="text-center">
             <h2 className="text-lg font-bold text-yellow-400 mb-4">Thank You!</h2>
-            <p className='text-black font-bold'>Thank you for applying to participate in the Fresher's Party.</p>
+            <p className='text-black font-bold'>Thank you for applying to participate in the Fresher's Party. We will contact you soon in the college</p>
             <button 
               onClick={onClose} 
               className="mt-4 py-2 px-4 bg-yellow-400 text-black font-semibold rounded-full hover:bg-yellow-500 transition duration-300"
@@ -63,17 +63,22 @@ const Modal = ({ isOpen, onClose }) => {
               required
               className="border p-2 mb-4 w-full rounded shadow"
             />
-            <input
-              type="text"
-              name="className"
-              placeholder="Class (e.g., BCA 1st Year)"
-              value={formData.className}
+            <select
+              name="classN"
+              value={formData.classN}
               onChange={handleChange}
-              required
               className="border p-2 mb-4 w-full rounded shadow"
-            />
+            >
+              <option value="Choose">Choose Your Class</option>
+              <option value="BCA1">BCA1</option>
+              <option value="BCA2">BCA2</option>
+              <option value="BCA3">BCA3</option>
+              <option value="MCA1">MCA1</option>
+              <option value="MCA3">MCA3</option>
+              <option value="Other">Other Departments</option>
+            </select>
             <input
-              type="text"
+              type="number"
               name="rollNo"
               placeholder="Roll No."
               value={formData.rollNo}
@@ -96,6 +101,7 @@ const Modal = ({ isOpen, onClose }) => {
               onChange={handleChange}
               className="border p-2 mb-4 w-full rounded shadow"
             >
+              <option value="Choose">Choose Your Act</option>
               <option value="Dance">Dance</option>
               <option value="Singing">Singing</option>
               <option value="Instrumental Music">Instrumental Music</option>

@@ -3,45 +3,45 @@ import { motion } from 'framer-motion';
 
 const agendaItems = [
     {
-        time: '🕙 10:00 AM - 11:00 AM',
+        time: '🕙 10:00 AM - 10:30 AM',
         title: 'Registration and Networking',
         description: 'Check in at the entrance, enjoy refreshments, and receive your welcome kit.',
         icon: '🎟️', // Ticket emoji
     },
     {
-        time: '🎉 11:00 AM - 12:00 PM',
+        time: '🎉 10:30 AM - 11:00 AM',
         title: 'Opening Ceremony',
-        description: 'Join us for the inaugural address and welcome speech from the organizers.',
+        description: 'Join us for the inaugural address and welcome song.',
         icon: '📢', // Megaphone emoji
     },
     {
-        time: '🎭 12:00 PM - 1:00 PM',
+        time: '🎭 11:00 AM - 1:00 PM',
         title: 'Cultural Performances',
         description: 'Enjoy performances by talented students showcasing music, dance, and drama.',
         icon: '🎶', // Music note emoji
     },
     {
-        time: '🍽️ 1:00 PM - 2:00 PM',
+        time: '🍽️ 1:00 PM - 1:30 PM',
         title: 'Lunch Break',
         description: 'Take a break and enjoy a delicious lunch while mingling with friends.',
         icon: '🥗', // Salad emoji
     },
     {
-        time: '🎲 2:00 PM - 3:00 PM',
-        title: 'Games and Activities',
+        time: '🎲 1:30 PM - 2:30 PM',
+        title: 'Extra Enjoyment',
         description: 'Participate in fun games and interactive activities with fellow students.',
         icon: '🏆', // Trophy emoji
     },
     {
-        time: '🎤 4:00 PM - 5:00 PM',
-        title: 'Guest Speaker Session',
-        description: 'Listen to inspiring talks from our special guests sharing their insights.',
+        time: '🎤 2:30 PM - 3:00 PM',
+        title: 'Photo Session',
+        description: 'Catch your memories & meet your seniours, teachers',
         icon: '💬', // Speech balloon emoji
     },
     {
-        time: '🎊 5:00 PM - 6:00 PM',
-        title: 'Closing Ceremony',
-        description: 'Wrap up the day with closing remarks, thank you notes, and final celebrations.',
+        time: '🎊 3:00 PM - 4:30 PM',
+        title: 'Closing Ceremony & Random Group Dance',
+        description: 'Wrap up the day with closing remarks, thank you notes, and final celebrations with mix group dance.',
         icon: '🎆', // Fireworks emoji
     },
 ];

@@ -8,14 +8,14 @@ const Footer = () => {
                 <div className="mb-4 md:mb-0 mx-4">
                     <h2 className="text-2xl font-bold mb-1">StageVibe © 2024</h2>
                     <p className="text-sm">All Rights Reserved</p>
-                    <p className="text-sm mt-2">Made with 💓 by Ayush</p>
+                    <p className="text-sm mt-2">Made with ❤️ by <a className='font-medium text-sky-600' href='https://instagram.com/ayushroyl'>Ayush</a></p>
                 </div>
 
                 <div className="mt-4 md:mt-0 mx-4">
                     <h3 className="font-semibold text-lg mb-2">Connect with Us</h3>
                     <div className="flex justify-center space-x-6 mt-2">
                         <a
-                            href="https://instagram.com/yourprofile"
+                            href="https://instagram.com/ayushroyl"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-blue-400 transition duration-300"
@@ -23,7 +23,7 @@ const Footer = () => {
                             <FaInstagram size={24} />
                         </a>
                         <a
-                            href="https://linkedin.com/in/yourprofile"
+                            href="https://linkedin.com/in/ayushroyl"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-blue-400 transition duration-300"
@@ -31,7 +31,7 @@ const Footer = () => {
                             <FaLinkedin size={24} />
                         </a>
                         <a
-                            href="https://github.com/yourprofile"
+                            href="https://github.com/ayushroyl"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-blue-400 transition duration-300"
@@ -39,7 +39,7 @@ const Footer = () => {
                             <FaGithub size={24} />
                         </a>
                         <a
-                            href="https://twitter.com/yourprofile"
+                            href="https://twitter.com/ayushroyl"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-blue-400 transition duration-300"
@@ -58,7 +58,7 @@ const Footer = () => {
                         Join us as we celebrate creativity, talent, and collaboration within our community.
                     </p>
                     <p className="text-sm text-gray-300 mb-1">
-                        For inquiries or collaborations, reach out to us at: <span className="text-orange-500">contact@stagevibe.com</span>
+                        For business inquiries or collaborations, reach out to us at: <span className="text-orange-500">ayushroy.business.contact@gmail.com</span>
                     </p>
                     <p className="text-sm text-gray-300">
                         Connect with us on social media for updates on our events!
