@@ -12,6 +12,9 @@ import Team from './components/Team';
 import FAQ from './components/faq';
 import Footer from './components/Footer';
 import './App.css';
+import Login from './pages/login';
+import Superadmin from './pages/superadmin';
+import Admin from './pages/admin';
 
 const App = () => {
   return (
@@ -33,6 +36,9 @@ const App = () => {
         <Route path="/" element={<><Home /> <About /> <Agenda /> <Photos /> <Team /> <FAQ /> </>} />
         <Route path='/rating' element={<Rating />} />
         <Route path='/booking' element={<Booking />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/superadmin' element={<Superadmin />} />
       </Routes>
 
       <Footer />

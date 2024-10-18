@@ -46,7 +46,7 @@ const Nav = () => {
               { label: "Team", href: "#team" },
               { label: "Book Seat", href: "/booking" }, // New "Book Seat" button
               { label: "Rating", href: "/rating" },
-              { label: "Login", href: "#login" }
+              { label: "Login", href: "/login" }
             ].map((item, index) => (
               <motion.li
                 key={index}
