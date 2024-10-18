@@ -65,15 +65,20 @@ const AdminDashboard = () => {
               className="p-2 border border-gray-300 rounded-md"
               required
             />
-            <input
-              type="text"
+            <select
               name="class"
               value={userForm.class}
               onChange={handleUserInputChange}
               placeholder="Class"
               className="p-2 border border-gray-300 rounded-md"
               required
-            />
+            >
+                <option value="BCA1">BCA1</option>
+                <option value="BCA1">BCA2</option>
+                <option value="BCA1">BCA3</option>
+                <option value="BCA1">MCA1</option>
+                <option value="BCA1">MCA3</option>
+            </select>
             <input
               type="text"
               name="roll"

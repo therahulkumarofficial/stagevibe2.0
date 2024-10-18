@@ -33,9 +33,9 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-      <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md">
+      <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Welcome Back
+          Welcome to StageVibe
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -67,13 +67,6 @@ const Login = () => {
               <i className="fas fa-lock"></i>
             </span>
           </div>
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <a href="#" className="text-indigo-500 hover:underline">
-                Forgot your password?
-              </a>
-            </div>
-          </div>
           <button
             type="submit"
             className={`w-full py-3 mt-6 text-white font-semibold rounded-lg shadow-md focus:outline-none transition duration-300 ${
@@ -86,12 +79,6 @@ const Login = () => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="text-center text-gray-600 mt-6">
-          Don't have an account?{' '}
-          <a href="#" className="text-indigo-500 hover:underline">
-            Sign up
-          </a>
-        </p>
       </div>
     </div>
   );
