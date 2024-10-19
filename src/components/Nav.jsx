@@ -66,34 +66,41 @@ const Nav = () => {
 
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <motion.nav
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={mobileMenuVariants}
-            transition={{ duration: 0.4 }}
-            className="absolute top-16 left-0 w-full bg-[#0b0b22FD] rounded-b-lg z-30 md:hidden"
+{isMobileMenuOpen && (
+  <motion.nav
+    initial="hidden"
+    animate="visible"
+    exit="exit"
+    variants={mobileMenuVariants}
+    transition={{ duration: 0.4 }}
+    className="absolute top-16 left-0 w-full bg-[#0b0b22FD] rounded-b-lg z-30"
+  >
+    <ul className="text-center flex flex-col space-y-4 p-6">
+      {[
+        { label: "About", href: "/#about" },
+        { label: "Agenda", href: "/#agenda" },
+        { label: "Photos", href: "/#photos" },
+        { label: "Book Seat", href: "/booking" },
+        { label: "Team", href: "/#team" },
+        { label: "Login", href: "/login" }
+      ].map((item, index) => (
+        <motion.li
+          key={index}
+          whileHover={{ scale: 1.05 }} // Slight scale increase on hover
+          whileTap={{ scale: 0.95 }} // Slight scale decrease on tap
+        >
+          <Link // Use Link for navigation
+            to={item.href} // Use to instead of href
+            className="text-white font-semibold transition-all duration-300 bg-[#0b0b22FD] hover:bg-white hover:text-black py-2 px-4 rounded-md"
+            onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
           >
-            <ul className="text-center flex flex-col space-y-4 p-6">
-              {["About", "Agenda", "Photos", "Book Seat", "Team", "Login"].map((item, index) => (
-                <motion.li
-                  key={index}
-                  whileHover={{ scale: 1.05 }} // Slight scale increase on hover
-                  whileTap={{ scale: 0.95 }} // Slight scale decrease on tap
-                >
-                  <a
-                    href={`#${item.toLowerCase().replace(" ", "-")}`} // Correct id reference
-                    className="text-white font-semibold transition-all duration-300 bg-[#0b0b22FD] hover:bg-white hover:text-black py-2 px-4 rounded-md"
-                    onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
-                  >
-                    {item}
-                  </a>
-                </motion.li>
-              ))}
-            </ul>
-          </motion.nav>
-        )}
+            {item.label}
+          </Link>
+        </motion.li>
+      ))}
+    </ul>
+  </motion.nav>
+)}
       </div>
     </header>
   );
