@@ -10,7 +10,7 @@ const Home = () => {
     const heading = document.getElementById('hero-heading');
     heading.classList.add('animate__animated', 'animate__fadeInDown');
   }, []);
-
+ 
   return (
     <section
       className="relative h-screen bg-cover bg-center"

@@ -21,39 +21,50 @@ const Booking = () => {
   const [userDetails, setUserDetails] = useState({});
   const [totalAmount, setTotalAmount] = useState(0);
   const [isBooking, setIsBooking] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [currentSeat, setCurrentSeat] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const scrollRef = useRef(null);
   const scrollInterval = useRef(null);
   const isManualScroll = useRef(false);
-  const autoScrollTimeout = useRef(null); // Ref for debounce timeout
+  const autoScrollTimeout = useRef(null);
   const bookedSeats = [
     'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10',
     'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10'
   ];
+  const [formData, setFormData] = useState({
+    name: '',
+    classN: '',  // Added class
+    rollNo: '',   // Added roll number
+    mobileNo: ''  // Added mobile number
+  });
+  
 
   const handleSeatSelection = (seat) => {
-    const updatedSelectedSeats = new Set(selectedSeats);
-    if (updatedSelectedSeats.has(seat)) {
-      updatedSelectedSeats.delete(seat);
-      const newUserDetails = { ...userDetails };
-      delete newUserDetails[seat]; // Remove user details for the unselected seat
-      setUserDetails(newUserDetails);
-    } else {
-      updatedSelectedSeats.add(seat);
+    if (!selectedSeats.has(seat) && !isSeatBooked(seat)) {
+      setCurrentSeat(seat);
+      setIsPopupOpen(true);
     }
-    setSelectedSeats(updatedSelectedSeats);
-    setTotalAmount(updatedSelectedSeats.size * 250);
   };
 
-  const handleInputChange = (seat, e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserDetails((prevDetails) => ({
       ...prevDetails,
-      [seat]: {
-        ...prevDetails[seat],
+      [currentSeat]: {
+        ...prevDetails[currentSeat],
         [name]: value,
       },
     }));
+  };
+
+  const addSeatToBooking = () => {
+    if (currentSeat && userDetails[currentSeat]) {
+      setSelectedSeats((prev) => new Set(prev).add(currentSeat));
+      setTotalAmount((prev) => prev + 250); // Assuming each seat costs ₹250
+      setIsPopupOpen(false);
+      setCurrentSeat('');
+    }
   };
 
   const handleBooking = () => {
@@ -66,9 +77,7 @@ const Booking = () => {
     setSelectedSeats(new Set());
     setUserDetails({});
     setTotalAmount(0);
-    setIsBooking(false);
   };
-
 
   const isSeatBooked = (seat) => {
     return bookedSeats.includes(seat);
@@ -91,15 +100,11 @@ const Booking = () => {
       <div
         key={seat}
         className={seatClass}
-        onClick={() => !seatBooked && handleSeatSelection(seat)}
+        onClick={() => handleSeatSelection(seat)}
       >
         {seat}
       </div>
     );
-  };
-
-  const handleConfirmBooking = () => {
-    setIsBooking(true);
   };
 
   const startAutoScrolling = () => {
@@ -209,99 +214,82 @@ const Booking = () => {
           <div className="w-4 h-4 bg-gray-500 rounded mr-2"></div>
           <span>Booked</span>
         </div>
-        <div className="flex items-center mb-2">
-          <div className="w-4 h-4 bg-yellow-400 rounded mr-2"></div>
-          <span>Pending</span>
-        </div>
       </div>
 
       {/* Booking Summary */}
       {selectedSeats.size > 0 && (
         <div className="flex justify-center mb-4">
           <div className="border border-gray-300 rounded p-4">
-            <h2 className="text-lg font-bold">Selected Seats:</h2>
-            <p>{Array.from(selectedSeats).join(', ')}</p>
-            <p>Total Amount: ₹{totalAmount}</p>
-            <button onClick={handleConfirmBooking} className="bg-green-500 text-white px-4 py-2 rounded mt-2">
-              Book Seats
+            <h2 className="text-lg font-bold mb-2">Booking Summary</h2>
+            <div>
+              <strong>Total Seats:</strong> {selectedSeats.size}
+            </div>
+            <div>
+              <strong>Total Amount:</strong> ₹{totalAmount}
+            </div>
+            <button
+              className="mt-2 bg-blue-500 text-white py-1 px-3 rounded"
+              onClick={handleBooking}
+            >
+              Pay ₹{totalAmount}
             </button>
           </div>
         </div>
       )}
 
-      {/* Booking Form Popup */}
-      {isBooking && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70">
-          <div className="bg-gray-800 p-5 rounded-lg shadow-xl font-black">
-            <h2 className="text-xl mb-4">Booking Details</h2>
-            <div className="mb-4">
-              <label>Name:</label>
-              <input
-                type="text"
-                name="name"
-                value={userDetails.name}
-                onChange={handleInputChange}
-                className="border border-white-300 rounded w-full p-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label>Phone:</label>
-              <input
-                type="number"
-                name="phone"
-                value={userDetails.name}
-                onChange={handleInputChange}
-                className="border border-white-300 rounded w-full p-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={userDetails.name}
-                onChange={handleInputChange}
-                className="border border-white-300 rounded w-full p-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label>Class:</label>
-              <select
-                name="class"
-                value={userDetails.class}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                required
+      {/* Seat selection popup */}
+      {isPopupOpen && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded p-6">
+            <h3 className="text-lg font-bold mb-4">Enter Details for {currentSeat}</h3>
+            <input
+              type="text"
+              name="name"
+              placeholder="Your Name"
+              className="border border-gray-300 rounded p-2 mb-2 w-full"
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              name="classN"
+              placeholder="Class (BCA1, BCA2, etc.)"
+              className="border border-gray-300 rounded p-2 mb-2 w-full"
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              name="rollNo"
+              placeholder="Roll Number"
+              className="border border-gray-300 rounded p-2 mb-2 w-full"
+              onChange={handleInputChange}
+            />
+            <input
+              type="text"
+              name="mobileNo"
+              placeholder="Your Mobile Number"
+              className="border border-gray-300 rounded p-2 mb-2 w-full"
+              onChange={handleInputChange}
+            />
+            <div className="flex justify-between">
+              <button
+                className="bg-gray-300 text-gray-700 py-1 px-3 rounded"
+                onClick={() => setIsPopupOpen(false)}
               >
-                <option value="">Select Class</option>
-                <option value="BCA1">BCA1</option>
-                <option value="BCA2">BCA2</option>
-                <option value="BCA3">BCA3</option>
-                <option value="MCA1">MCA1</option>
-                <option value="MCA3">MCA3</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label>Roll No:</label>
-              <input
-                type="number"
-                name="rollNo"
-                value={userDetails.rollNo}
-                onChange={handleInputChange}
-                className="border border-gray-300 rounded w-full p-2"
-                required
-              />
-            </div>
-            <p>Total Amount: ₹{totalAmount}</p>
-            <div className="flex justify-end mt-4">
-              <button onClick={handleBooking} className="bg-green-500 text-white px-4 py-2 rounded">
-                Pay {totalAmount}
+                Cancel
               </button>
               <button
-                onClick={() => setIsBooking(false)} className="bg-red-500 text-white px-4 py-2 rounded ml-2" > Cancel </button> </div> </div> </div>)} </div>);
+                className="bg-blue-500 text-white py-1 px-3 rounded"
+                onClick={addSeatToBooking}
+              >
+                Add Seat
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Booking;
+  
