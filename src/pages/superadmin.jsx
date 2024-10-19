@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ref, set, push, onValue, remove } from 'firebase/database';
+import database from '../firebase'; // Import Firebase instance
 
 const SuperAdminDashboard = () => {
-    const [superadminName, setSuperadminName] = useState('Super Admin'); // Change to dynamic data if needed
+    const [superadminName, setSuperadminName] = useState('Super Admin');
     const [users, setUsers] = useState([]);
     const [performers, setPerformers] = useState([]);
     const [admins, setAdmins] = useState([]);
@@ -26,6 +28,30 @@ const SuperAdminDashboard = () => {
     });
 
     const [editingUser, setEditingUser] = useState(null);
+    const [message, setMessage] = useState(''); // State to handle messages
+    const [showMessage, setShowMessage] = useState(false); // State to control the visibility of the message
+
+    // Fetch data from Firebase on component mount
+    useEffect(() => {
+        const usersRef = ref(database, 'users');
+        const performersRef = ref(database, 'performers');
+        const adminsRef = ref(database, 'admins');
+
+        onValue(usersRef, (snapshot) => {
+            const data = snapshot.val();
+            setUsers(data ? Object.values(data) : []);
+        });
+
+        onValue(performersRef, (snapshot) => {
+            const data = snapshot.val();
+            setPerformers(data ? Object.values(data) : []);
+        });
+
+        onValue(adminsRef, (snapshot) => {
+            const data = snapshot.val();
+            setAdmins(data ? Object.values(data) : []);
+        });
+    }, []);
 
     // Handler functions for form inputs
     const handleUserInputChange = (e) => {
@@ -46,28 +72,39 @@ const SuperAdminDashboard = () => {
     // Function to add user
     const handleAddUser = (e) => {
         e.preventDefault();
-        setUsers([...users, { ...userForm, id: users.length + 1, approved: false }]);
+        const usersRef = ref(database, 'users');
+        const newUserRef = push(usersRef);
+        set(newUserRef, { ...userForm, id: newUserRef.key, approved: false });
+        showPopup(`User ${userForm.name} added successfully.`);
         setUserForm({ name: '', class: '', roll: '', mobile: '', seatNo: '', paymentMode: 'cash' });
     };
 
     // Function to add performer
     const handleAddPerformer = (e) => {
         e.preventDefault();
-        setPerformers([...performers, { ...performerForm, id: performers.length + 1 }]);
+        const performersRef = ref(database, 'performers');
+        const newPerformerRef = push(performersRef);
+        set(newPerformerRef, { ...performerForm, id: newPerformerRef.key });
+        showPopup(`Performer ${performerForm.name} added successfully.`);
         setPerformerForm({ name: '', imgUrl: '' });
     };
 
     // Function to add admin
     const handleAddAdmin = (e) => {
         e.preventDefault();
-        setAdmins([...admins, { ...adminForm, id: admins.length + 1 }]);
+        const adminsRef = ref(database, 'admins');
+        const newAdminRef = push(adminsRef);
+        set(newAdminRef, { ...adminForm, id: newAdminRef.key });
+        showPopup(`Admin ${adminForm.username} added successfully.`);
         setAdminForm({ username: '', password: '' });
     };
 
     // Approve user
     const handleApproveUser = (id) => {
-        const updatedUsers = users.map((user) => (user.id === id ? { ...user, approved: true } : user));
-        setUsers(updatedUsers);
+        const userRef = ref(database, `users/${id}`);
+        const updatedUser = users.find((user) => user.id === id);
+        set(userRef, { ...updatedUser, approved: true });
+        showPopup(`User ${updatedUser.name} approved.`);
     };
 
     // Edit user
@@ -77,21 +114,47 @@ const SuperAdminDashboard = () => {
     };
 
     const handleSaveEditUser = () => {
-        const updatedUsers = users.map((user) =>
-            user.id === editingUser.id ? { ...editingUser, ...userForm } : user
-        );
-        setUsers(updatedUsers);
+        const userRef = ref(database, `users/${editingUser.id}`);
+        set(userRef, { ...editingUser, ...userForm });
+        showPopup(`User ${editingUser.name} updated successfully.`);
         setEditingUser(null);
         setUserForm({ name: '', class: '', roll: '', mobile: '', seatNo: '', paymentMode: 'cash' });
     };
 
     // Delete user
     const handleDeleteUser = (id) => {
-        setUsers(users.filter((user) => user.id !== id));
+        const userRef = ref(database, `users/${id}`);
+        remove(userRef);
+        showPopup('User deleted successfully.');
     };
 
-    // Render approved users
+    // Delete performer
+    const handleDeletePerformer = (id) => {
+        const performerRef = ref(database, `performers/${id}`);
+        remove(performerRef);
+        showPopup('Performer deleted successfully.');
+    };
+
+    // Delete admin
+    const handleDeleteAdmin = (id) => {
+        const adminRef = ref(database, `admins/${id}`);
+        remove(adminRef);
+        showPopup('Admin deleted successfully.');
+    };
+
+    // Function to show popup message
+    const showPopup = (msg) => {
+        setMessage(msg);
+        setShowMessage(true);
+        setTimeout(() => {
+            setShowMessage(false);
+            setMessage('');
+        }, 3000); // Show for 3 seconds
+    };
+
+    // Render approved users and pending users
     const approvedUsers = users.filter((user) => user.approved);
+    const pendingUsers = users.filter((user) => !user.approved);
 
     return (
         <div className="min-h-screen bg-gray-100 p-8">
@@ -102,6 +165,13 @@ const SuperAdminDashboard = () => {
                 <h2 className="text-xl font-semibold text-gray-600 mb-6">
                     Welcome {superadminName}
                 </h2>
+
+                {/* Display the message */}
+                {showMessage && (
+                    <div className="bg-green-500 text-white p-4 rounded-md mb-4">
+                        {message}
+                    </div>
+                )}
 
                 {/* Add User Form */}
                 <div className="mb-10 ">
@@ -184,7 +254,7 @@ const SuperAdminDashboard = () => {
                             name="name"
                             value={performerForm.name}
                             onChange={handlePerformerInputChange}
-                            placeholder="Name"
+                            placeholder="Performer Name"
                             className="p-2 border border-gray-300 rounded-md"
                             required
                         />
@@ -208,7 +278,7 @@ const SuperAdminDashboard = () => {
 
                 {/* Add Admin Form */}
                 <div className="mb-10">
-                    <h3 className="text-2xl font-bold text-black mb-4">Add Admin</h3>
+                    <h3 className="text-2xl font-bold mb-4 text-black">Add Admin</h3>
                     <form onSubmit={handleAddAdmin} className="grid grid-cols-2 gap-4">
                         <input
                             type="text"
@@ -236,96 +306,127 @@ const SuperAdminDashboard = () => {
                         </button>
                     </form>
                 </div>
-                {/* Show Admins */}
+
+                {/* Display Users */}
                 <div className="mb-10">
-                    <h3 className="text-2xl font-bold mb-4 text-black">Admins:</h3>
-                    <ul>
-                        {admins.map((admin) => (
-                            <li key={admin.id} className="mb-4 p-4 bg-gray-600 font-medium rounded-md">
-                                <p>Username: {admin.username}</p>
-                                <p>Password: {admin.password}</p>
-                                <button
-                                    onClick={() => handleDeleteAdmin(admin.id)} // Assuming a delete function
-                                    className="bg-red-500 text-white py-1 px-3 rounded-md"
+                    <h3 className="text-2xl font-bold mb-4 text-black">Approved Users</h3>
+                    {approvedUsers.length > 0 ? (
+                        <ul className="space-y-4">
+                            {approvedUsers.map((user) => (
+                                <li
+                                    key={user.id}
+                                    className={`flex justify-between items-center p-4 rounded-md shadow-md ${user.approved ? 'bg-green-200' : 'bg-red-200'
+                                        }`}
                                 >
-                                    Delete
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                                    <div className='text-black'>
+                                        <p><strong>Name:</strong> {user.name}</p>
+                                        <p><strong>Class:</strong> {user.class}</p>
+                                        <p><strong>Roll:</strong> {user.roll}</p>
+                                        <p><strong>Mobile:</strong> {user.mobile}</p>
+                                        <p><strong>Payment Mode:</strong> {user.paymentMode}</p>
+                                        <p><strong>Approved:</strong> {user.approved ? 'Yes' : 'No'}</p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick={() => handleDeleteUser(user.id)}
+                                            className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 transition"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No users available.</p>
+                    )}
                 </div>
 
-                {/* Show Performers */}
+                {/* Display Pending Users */}
                 <div className="mb-10">
-                    <h3 className="text-2xl font-bold mb-4 text-black">Performers:</h3>
-                    <ul>
-                        {performers.map((performer) => (
-                            <li key={performer.id} className="mb-4 p-4 bg-gray-600 font-medium rounded-md">
-                                <p>Name: {performer.name}</p>
-                                <img src={performer.imgUrl} alt={performer.name} className="w-16 h-16 rounded-full" />
-                                <button
-                                    onClick={() => handleDeletePerformer(performer.id)} // Assuming a delete function
-                                    className="bg-red-500 text-white py-1 px-3 rounded-md"
+                    <h3 className="text-2xl font-bold mb-4 text-black">Pending Users</h3>
+                    {pendingUsers.length > 0 ? (
+                        <ul className="space-y-4">
+                            {pendingUsers.map((user) => (
+                                <li key={user.id} className={`flex justify-between items-center p-4 rounded-md shadow-md ${user.approved ? 'bg-green-200' : 'bg-red-200'
+                                    }`}
                                 >
-                                    Delete
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
+                                    <div className='text-black'>
+                                        <p><strong>Name:</strong> {user.name}</p>
+                                        <p><strong>Class:</strong> {user.class}</p>
+                                        <p><strong>Roll:</strong> {user.roll}</p>
+                                        <p><strong>Mobile:</strong> {user.mobile}</p>
+                                        <p><strong>Payment Mode:</strong> {user.paymentMode}</p>
+                                        <p><strong>Approved:</strong> {user.approved ? 'Yes' : 'No'}</p>
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick={() => handleApproveUser(user.id)}
+                                            className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition"
+                                        >
+                                            Approve
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteUser(user.id)}
+                                            className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>) : (
+                        <p className="text-black">No pending users.</p>
+                    )}
                 </div>
 
-                {/* Pending Users */}
+                {/* Display Performers */}
                 <div className="mb-10">
-                    <h3 className="text-2xl font-bold text-slate-950 mb-4">Pending Users:</h3>
-                    <ul>
-                        {users
-                            .filter((user) => !user.approved)
-                            .map((user) => (
-                                <li key={user.id} className="mb-4 p-4 bg-gray-800 rounded-lg">
-                                    <p>Name: {user.name}</p>
-                                    <p>Class: {user.class}</p>
-                                    <p>Roll: {user.roll}</p>
-                                    <p>Mobile: {user.mobile}</p>
-                                    <p>Seat No: {user.seatNo}</p>
-                                    <p>Payment Mode: {user.paymentMode}</p>
+
+                    <h3 className="text-2xl font-bold mb-4 text-blue-700">Performers</h3>
+                    {performers.length > 0 ? (
+                        <ul className="space-y-4">
+                            {performers.map((performer) => (
+                                <li key={performer.id} className="flex justify-between items-center p-4 bg-gray-200 rounded-md shadow-md">
+                                    <div className='text-black'>
+                                        <p><strong>Name:</strong> {performer.name}</p>
+                                        <img src={performer.imgUrl} alt={performer.name} className="w-20 h-20 object-cover mt-2" />
+                                    </div>
+                                    <div>
+                                        <button
+                                            onClick={() => handleDeletePerformer(performer.id)}
+                                            className="bg-red-500 text-white px-4 py-1 rounded-md hover:bg-red-600 transition"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No performers available.</p>
+                    )}
+                </div>
+
+                {/* Display Admins */}
+                <div className="mb-10">
+                    <h3 className="text-2xl font-bold mb-4 text-black">Admins</h3>
+                    {admins.length > 0 ? (
+                        <ul className="space-y-4">
+                            {admins.map((admin) => (
+                                <li key={admin.id} className="bg-gray-200 p-4 rounded-md flex justify-between items-center">
+                                    <span className="text-black">{admin.username}</span>
                                     <button
-                                        onClick={() => handleApproveUser(user.id)}
-                                        className="bg-green-500 text-white py-1 px-3 rounded-md mr-2"
-                                    >
-                                        Approve
-                                    </button>
-                                    <button
-                                        onClick={() => handleEditUser(user)}
-                                        className="bg-yellow-500 text-white py-1 px-3 rounded-md mr-2"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => handleDeleteUser(user.id)}
-                                        className="bg-red-500 text-white py-1 px-3 rounded-md"
+                                        onClick={() => handleDeleteAdmin(admin.id)}
+                                        className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition"
                                     >
                                         Delete
                                     </button>
                                 </li>
                             ))}
-                    </ul>
-                </div>
-
-                {/* Approved Users */}
-                <div>
-                    <h3 className="text-2xl font-bold mb-4 text-black">Approved Users:</h3>
-                    <ul>
-                        {approvedUsers.map((user) => (
-                            <li key={user.id} className="mb-4 p-4 bg-green-500 font-medium rounded-md">
-                                <p>Name: {user.name}</p>
-                                <p>Class: {user.class}</p>
-                                <p>Roll: {user.roll}</p>
-                                <p>Mobile: {user.mobile}</p>
-                                <p>Seat No: {user.seatNo}</p>
-                                <p>Payment Mode: {user.paymentMode}</p>
-                            </li>
-                        ))}
-                    </ul>
+                        </ul>) : (
+                        <p className="text-black">No Admins.</p>
+                    )}
                 </div>
             </div>
         </div>
