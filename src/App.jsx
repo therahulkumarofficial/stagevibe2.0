@@ -15,6 +15,8 @@ import './App.css';
 import Login from './pages/login';
 import Superadmin from './pages/superadmin';
 import Admin from './pages/admin';
+import SAdminlogin from './pages/sadminlogin';
+import AdminLogin from './pages/adminlogin';
 
 const App = () => {
   return (
@@ -39,6 +41,8 @@ const App = () => {
         <Route path='/login' element={<Login />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='/superadmin' element={<Superadmin />} />
+        <Route path='/adminlogin' element={<AdminLogin />} />
+        <Route path='/sadminlogin' element={<SAdminlogin />} />
       </Routes>
 
       <Footer />

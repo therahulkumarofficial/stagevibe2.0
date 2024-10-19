@@ -415,7 +415,8 @@ const SuperAdminDashboard = () => {
                         <ul className="space-y-4">
                             {admins.map((admin) => (
                                 <li key={admin.id} className="bg-gray-200 p-4 rounded-md flex justify-between items-center">
-                                    <span className="text-black">{admin.username}</span>
+                                    <span className="text-black">user: {admin.username}</span>
+                                    <span className='text-black'>pass: {admin.password}</span>
                                     <button
                                         onClick={() => handleDeleteAdmin(admin.id)}
                                         className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition"
