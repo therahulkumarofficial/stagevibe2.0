@@ -1,10 +1,11 @@
 import React from 'react';
-import { FaInstagram, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'; // Icons for social media
+import { motion } from 'framer-motion';
+import { FaInstagram, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
+
 import ayush from '../assets/team/ayush.png';
 import shiva from '../assets/team/shiva.png';
 import rahul from '../assets/team/rahul.png';
 
-// Example team data
 const teamMembers = [
     {
         name: 'Ayush Roy',
@@ -12,7 +13,7 @@ const teamMembers = [
             <>
               Technical Lead <br /> Full Stack Developer
             </>
-          ),
+        ),
         image: ayush,
         instagram: 'https://instagram.com/ayushroyl', 
         linkedin: 'https://www.linkedin.com/in/ayushroyl',
@@ -41,75 +42,90 @@ const teamMembers = [
 
 const Team = () => {
     return (
-        <section id="team" className="bg-gradient-to-b from-[#0b0b22FD] to-[#0f1a3dFD] py-10">
-            <div className="max-w-6xl mx-auto text-center">
-                <h2 className="text-5xl font-bold mb-8 text-white">Our Technical Team</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 px-4">
+        <section id="team" className="relative py-16 md:py-24 bg-gradient-to-b from-[#040024] via-[#070733] to-[#0b0b22] overflow-hidden">
+            {/* Background glow effects */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full filter blur-[100px]" />
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600/20 rounded-full filter blur-[100px]" />
+            </div>
+
+            <div className="max-w-6xl mx-auto text-center relative z-10">
+                <motion.h2 
+                    className="text-4xl md:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-100"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    Our Technical Team
+                </motion.h2>
+                <motion.div 
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 px-4"
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0 },
+                        visible: {
+                            opacity: 1,
+                            transition: {
+                                staggerChildren: 0.2
+                            }
+                        }
+                    }}
+                >
                     {teamMembers.map((member, index) => (
-                        <div
+                        <motion.div
                             key={index}
-                            className="bg-gray-800 rounded-lg p-6 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                            className="bg-[#0b0b22]/40 backdrop-blur-sm rounded-lg p-6 shadow-lg hover:shadow-xl border border-blue-500/20 transition-all duration-300"
+                            variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0 }
+                            }}
+                            whileHover={{ scale: 1.05 }}
                         >
-                            {/* Team Member Image */}
-                            <img
+                            <motion.img
                                 src={member.image}
                                 alt={member.name}
                                 className="w-32 h-32 rounded-full mx-auto mb-4 object-cover shadow-md"
+                                initial={{ scale: 0.8 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.3 }}
                             />
-                            {/* Team Member Name */}
-                            <h3 className="text-xl font-semibold text-yellow-300">{member.name}</h3>
-                            {/* Team Member Role */}
-                            <p className="text-gray-300 mb-4">{member.role}</p>
+                            <h3 className="text-xl font-semibold text-yellow-300 mb-2">{member.name}</h3>
+                            <p className="text-blue-200 mb-4">{member.role}</p>
 
-                            {/* Social Media Links */}
                             <div className="flex justify-center space-x-4">
                                 {member.instagram && (
-                                    <a
-                                        href={member.instagram}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-pink-500 hover:text-purple-500"
-                                    >
-                                        <FaInstagram className="h-6 w-6" />
-                                    </a>
+                                    <SocialIcon href={member.instagram} icon={FaInstagram} color="text-pink-500" hoverColor="text-pink-400" />
                                 )}
                                 {member.linkedin && (
-                                    <a
-                                        href={member.linkedin}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 hover:text-blue-400"
-                                    >
-                                        <FaLinkedin className="h-6 w-6" />
-                                    </a>
+                                    <SocialIcon href={member.linkedin} icon={FaLinkedin} color="text-blue-500" hoverColor="text-blue-400" />
                                 )}
                                 {member.github && (
-                                    <a
-                                        href={member.github}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-gray-300 hover:text-gray-100"
-                                    >
-                                        <FaGithub className="h-6 w-6" />
-                                    </a>
+                                    <SocialIcon href={member.github} icon={FaGithub} color="text-gray-300" hoverColor="text-gray-100" />
                                 )}
                                 {member.twitter && (
-                                    <a
-                                        href={member.twitter}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-400 hover:text-blue-300"
-                                    >
-                                        <FaTwitter className="h-6 w-6" />
-                                    </a>
+                                    <SocialIcon href={member.twitter} icon={FaTwitter} color="text-blue-400" hoverColor="text-blue-300" />
                                 )}
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
 };
+
+const SocialIcon = ({ href, icon: Icon, color, hoverColor }) => (
+    <motion.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${color} hover:${hoverColor}`}
+        whileHover={{ scale: 1.2 }}
+        whileTap={{ scale: 0.9 }}
+    >
+        <Icon className="h-6 w-6" />
+    </motion.a>
+);
 
 export default Team;

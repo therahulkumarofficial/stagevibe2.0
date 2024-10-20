@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FAQData = [
     {
@@ -31,27 +32,66 @@ const FAQ = () => {
     };
 
     return (
-        <section className="bg-gradient-to-b from-[#040024CC] to-[#0b0b22FD] py-10">
-            <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-5xl font-bold mb-8 text-white">Frequently Asked Questions</h2>
-                <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <section className="relative py-16 md:py-24 bg-gradient-to-b from-[#040024] via-[#070733] to-[#0b0b22] overflow-hidden">
+            {/* Background glow effects */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/20 rounded-full filter blur-[100px]" />
+                <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-blue-600/20 rounded-full filter blur-[100px]" />
+            </div>
+
+            <div className="max-w-4xl mx-auto text-center relative z-10">
+                <motion.h2 
+                    className="text-4xl md:text-5xl font-bold mb-12 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-blue-100"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    Frequently Asked Questions
+                </motion.h2>
+                <motion.div 
+                    className="bg-[#0b0b22]/40 backdrop-blur-sm p-6 rounded-lg shadow-lg border border-blue-500/20"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                >
                     {FAQData.map((item, index) => (
-                        <div key={index} className="mb-4">
-                            <button
+                        <motion.div 
+                            key={index} 
+                            className="mb-4"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                        >
+                            <motion.button
                                 onClick={() => toggleAnswer(index)}
                                 className="flex justify-between items-center w-full text-left text-lg font-semibold text-yellow-300 hover:text-white transition duration-300"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
                             >
                                 {item.question}
-                                <span className={`ml-2 ${activeIndex === index ? 'rotate-180' : 'rotate-0'} transition-transform duration-300`}>
+                                <motion.span
+                                    animate={{ rotate: activeIndex === index ? 180 : 0 }}
+                                    transition={{ duration: 0.3 }}
+                                >
                                     ▼
-                                </span>
-                            </button>
-                            {activeIndex === index && (
-                                <p className="text-gray-200 mt-2 text-base">{item.answer}</p>
-                            )}
-                        </div>
+                                </motion.span>
+                            </motion.button>
+                            <AnimatePresence>
+                                {activeIndex === index && (
+                                    <motion.p
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: 'auto' }}
+                                        exit={{ opacity: 0, height: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className="text-blue-100 mt-2 text-base overflow-hidden"
+                                    >
+                                        {item.answer}
+                                    </motion.p>
+                                )}
+                            </AnimatePresence>
+                        </motion.div>
                     ))}
-                </div>
+                </motion.div>
             </div>
         </section>
     );
